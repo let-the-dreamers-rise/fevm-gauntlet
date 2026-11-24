@@ -1,0 +1,98 @@
+[
+ {
+  "name": "pay(address) to f410 EthAccount (normal MetaMask user)",
+  "cells": [
+   "ok, credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "pay(address) to an EVM contract (FilecoinPayV1)",
+  "cells": [
+   "ok, credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "pay(uint64) to the f3 account id",
+  "cells": [
+   "ok, credited",
+   "fail, not credited",
+   "fail, not credited"
+  ]
+ },
+ {
+  "name": "pay(uint64) to an id with no actor",
+  "cells": [
+   "fail, not credited",
+   "fail, not credited",
+   "fail, not credited"
+  ]
+ },
+ {
+  "name": "EVM call{value} to masked ID of the f3 account",
+  "cells": [
+   "ok, credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "EVM call{value} to masked ID of a miner actor",
+  "cells": [
+   "fail, not credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "transfer() (2300 stipend) to masked ID of the f3 account",
+  "cells": [
+   "ok, credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "transfer() (2300 stipend) to f410 EthAccount",
+  "cells": [
+   "ok, credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "transfer() (2300 stipend) to masked ID of a miner actor",
+  "cells": [
+   "fail, not credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "burn() to f099",
+  "cells": [
+   "ok, credited",
+   "ok, credited",
+   "ok, credited"
+  ]
+ },
+ {
+  "name": "extcodesize(masked ID of the f3 account)",
+  "cells": [
+   "ok, not credited",
+   "ok, not credited",
+   "ok, not credited"
+  ]
+ },
+ {
+  "name": "extcodesize(masked ID of a miner actor)",
+  "cells": [
+   "ok, not credited, codesize=1",
+   "ok, not credited",
+   "ok, not credited"
+  ]
+ }
+]

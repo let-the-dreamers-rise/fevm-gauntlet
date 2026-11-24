@@ -1,0 +1,8 @@
+[profile.default]
+src = 'src'
+test = 'test'
+out = 'out'
+libs = ['lib']
+solc = "0.8.30"
+remappings = ['forge-std/=lib/forge-std/src/']
+fs_permissions = [{ access = "read-write", path = "./results" }, { access = "read", path = "./scenarios.json" }]

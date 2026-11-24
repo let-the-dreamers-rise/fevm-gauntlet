@@ -1,0 +1,55 @@
+name: ci
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 3 * * *" # nightly: catch chain or mock behaviour changes
+  workflow_dispatch:
+jobs:
+  conform:
+    name: FEVM chain vs forge mock (mainnet)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: fetch pinned fvm-solidity revisions
+        run: bash conform/setup.sh
+      - name: mock side (forge)
+        working-directory: conform
+        run: forge test
+      - name: chain side (eth_call on mainnet state, no funds)
+        working-directory: conform
+        run: python3 chain.py https://api.node.glif.io/rpc/v1
+      - name: compare against baseline
+        working-directory: conform
+        run: |
+          python3 compare.py --baseline baseline.json | tee results/table.md.log
+          cat results/table.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: conform-results
+          path: conform/results/
+  filecoin-pay-invariants:
+    name: FilecoinPayV1 stateful invariants (mainnet commit 04ded6a)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: drop the suite into filecoin-pay at the deployed commit
+        run: bash filecoin-pay/setup.sh
+      - name: run invariants
+        working-directory: filecoin-pay/upstream
+        run: forge test --match-path 'test/invariant/*' -vv
+  usdfc-pricefeed:
+    name: USDFC PriceFeed state machine (+ mainnet fork check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: bash usdfc/setup.sh
+      - name: fuzz and mainnet check
+        working-directory: usdfc
+        env:
+          FORK_URL: https://api.node.glif.io/rpc/v1
+        run: forge test -vv
